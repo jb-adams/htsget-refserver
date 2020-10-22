@@ -53,11 +53,13 @@ var bcftoolsViewSetRegionTC = []struct {
 var bcftoolsViewGetCommandTC = []struct {
 	filepath   string
 	headerOnly bool
+	outputVCF  bool
 	region     *htsrequest.Region
 	expArgs    []string
 }{
 	{
 		"/path/to/the/file",
+		true,
 		true,
 		nil,
 		[]string{"view", "/path/to/the/file", "--no-version", "-h", "-O", "v"},
@@ -65,6 +67,7 @@ var bcftoolsViewGetCommandTC = []struct {
 	{
 		"https://genomics.com/datasets/object0001",
 		false,
+		true,
 		&htsrequest.Region{
 			ReferenceName: "chr1",
 			Start:         intPtr(2000000),
@@ -108,6 +111,7 @@ func TestBcftoolsViewGetCommand(t *testing.T) {
 		bcftoolsView := BcftoolsView()
 		bcftoolsView.SetFilePath(tc.filepath)
 		bcftoolsView.SetHeaderOnly(tc.headerOnly)
+		bcftoolsView.SetOutputVCF(tc.outputVCF)
 		bcftoolsView.SetRegion(tc.region)
 		command := bcftoolsView.GetCommand()
 		assert.Equal(t, "bcftools", command.baseCommand)

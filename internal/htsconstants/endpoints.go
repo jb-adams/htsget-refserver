@@ -38,8 +38,8 @@ var ticketEndpointToDataEndpointPathMap = map[APIEndpoint]string{
 var endpointToEnabledFormatsMap = map[APIEndpoint][]string{
 	APIEndpointReadsTicket:    []string{FormatBam /*, FormatCram */},
 	APIEndpointReadsData:      []string{FormatBam /*, FormatCram */},
-	APIEndpointVariantsTicket: []string{FormatVcf /*, FormatBcf */},
-	APIEndpointVariantsData:   []string{FormatVcf /*, FormatBcf */},
+	APIEndpointVariantsTicket: []string{FormatVcf, FormatBcf},
+	APIEndpointVariantsData:   []string{FormatVcf, FormatBcf},
 }
 
 // String gets the string representation of a ServerEndpoint enum value
