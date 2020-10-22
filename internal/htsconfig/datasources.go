@@ -31,8 +31,9 @@ type DataSourceRegistry struct {
 //	Pattern (string): regex pattern indicating criteria for an ID to match the data source
 //	Path (string): path template, indicating how matching ids can be resolved to an exact location (path or url)
 type DataSource struct {
-	Pattern string `json:"pattern"`
-	Path    string `json:"path"`
+	Pattern       string `json:"pattern"`
+	Path          string `json:"path"`
+	DefaultFormat string `json:"defaultFormat"`
 }
 
 // newDataSourceRegistry instantiates a data source registry
@@ -107,7 +108,7 @@ func (registry *DataSourceRegistry) addDataSource(dataSource *DataSource) {
 	registry.Sources = append(registry.Sources, dataSource)
 }
 
-// findFirstMatch gets the first data source in the registry with a pattern matching the requested id
+// FindMatchingDataSource gets the first data source in the registry with a pattern matching the requested id
 //
 //	Type: DataSourceRegistry
 // Arguments
@@ -115,7 +116,7 @@ func (registry *DataSourceRegistry) addDataSource(dataSource *DataSource) {
 // Returns
 //	(*DataSource): the data source with a pattern matching the id
 //	(error): if not nil, a matching data source was not found
-func (registry *DataSourceRegistry) findFirstMatch(id string) (*DataSource, error) {
+func (registry *DataSourceRegistry) FindMatchingDataSource(id string) (*DataSource, error) {
 	for i := 0; i < len(registry.Sources); i++ {
 		match, err := registry.Sources[i].evaluatePatternMatch(id)
 		if err != nil {
@@ -131,15 +132,8 @@ func (registry *DataSourceRegistry) findFirstMatch(id string) (*DataSource, erro
 // GetMatchingPath gets the correct path to the object from the requested id
 // the registry is scanned for the first source matching the pattern. once found,
 // the path template is populated with the id
-//
-//	Type: DataSourceRegistry
-// Arguments
-//	id (string): requested object id
-// Returns
-//	(string): location to requested resource
-//	(error): if not nil, no suitable resource location could be constructed for the id
 func (registry *DataSourceRegistry) GetMatchingPath(id string) (string, error) {
-	matchingDataSource, err := registry.findFirstMatch(id)
+	matchingDataSource, err := registry.FindMatchingDataSource(id)
 	if matchingDataSource == nil || err != nil {
 		return "", err
 	}

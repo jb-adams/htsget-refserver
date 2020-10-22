@@ -13,23 +13,28 @@
         "sources": [
           {
             "pattern": "^tabulamuris\\.(?P<accession>10X.*)$",
-            "path": "https://s3.amazonaws.com/czbiohub-tabula-muris/10x_bam_files/{accession}_possorted_genome.bam"
+            "path": "https://s3.amazonaws.com/czbiohub-tabula-muris/10x_bam_files/{accession}_possorted_genome.bam",
+            "defaultFormat": "BAM"
           },
           {
             "pattern": "^tabulamuris\\.(?P<accession>.*)$",
-            "path": "https://s3.amazonaws.com/czbiohub-tabula-muris/facs_bam_files/{accession}.mus.Aligned.out.sorted.bam"
+            "path": "https://s3.amazonaws.com/czbiohub-tabula-muris/facs_bam_files/{accession}.mus.Aligned.out.sorted.bam",
+            "defaultFormat": "BAM"
           },
           {
             "pattern": "^giab\\.NA12878\\.NIST7035\\.(?P<lane>.*)$",
-            "path": "https://giab.s3.amazonaws.com/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/project.NIST_NIST7035_H7AP8ADXX_TAAGGCGA_{lane}_NA12878.bwa.markDuplicates.bam"
+            "path": "https://giab.s3.amazonaws.com/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/project.NIST_NIST7035_H7AP8ADXX_TAAGGCGA_{lane}_NA12878.bwa.markDuplicates.bam",
+            "defaultFormat": "BAM"
           },
           {
             "pattern": "^giab\\.NA12878\\.NIST7086\\.(?P<lane>.*)$",
-            "path": "https://giab.s3.amazonaws.com/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/project.NIST_NIST7086_H7AP8ADXX_CGTACTAG_{lane}_NA12878.bwa.markDuplicates.bam"
+            "path": "https://giab.s3.amazonaws.com/data/NA12878/Garvan_NA12878_HG001_HiSeq_Exome/project.NIST_NIST7086_H7AP8ADXX_CGTACTAG_{lane}_NA12878.bwa.markDuplicates.bam",
+            "defaultFormat": "BAM"
           },
           {
             "pattern": "^gatk\\.(?P<accession>.*)$",
-            "path": "./data/gcp/gatk-test-data/wgs_bam/{accession}.bam"
+            "path": "./data/gcp/gatk-test-data/wgs_bam/{accession}.bam",
+            "defaultFormat": "BAM"
           }
         ]
       },
@@ -55,19 +60,23 @@
         "sources": [
           {
             "pattern": "^1000genomes\\.phase1\\.(?P<accession>chrY)$",
-            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.phase1_samtools_si.20101123.snps.low_coverage.genotypes.vcf.gz"
+            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.phase1_samtools_si.20101123.snps.low_coverage.genotypes.vcf.gz",
+            "defaultFormat": "VCF"
           },
           {
             "pattern": "^1000genomes\\.phase1\\.(?P<accession>chrMT)$",
-            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.phase1_samtools_si.20101123.snps.low_coverage.genotypes.vcf.gz"
+            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.phase1_samtools_si.20101123.snps.low_coverage.genotypes.vcf.gz",
+            "defaultFormat": "VCF"
           },
           {
             "pattern": "^1000genomes\\.phase1\\.(?P<accession>.*)$",
-            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.integrated_phase1_v3.20101123.snps_indels_svs.genotypes.vcf.gz"
+            "path": "https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase1/analysis_results/integrated_call_sets/ALL.{accession}.integrated_phase1_v3.20101123.snps_indels_svs.genotypes.vcf.gz",
+            "defaultFormat": "VCF"
           },
           {
             "pattern": "^giab\\.(?P<accession>NA12878)$",
-            "path": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/{accession}_HG001/NISTv3.3/NA12878_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-Solid-10X_CHROM1-X_v3.3_highconf.vcf.gz"
+            "path": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/{accession}_HG001/NISTv3.3/NA12878_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-Solid-10X_CHROM1-X_v3.3_highconf.vcf.gz",
+            "defaultFormat": "VCF"
           }
         ]
       },

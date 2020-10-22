@@ -6,6 +6,8 @@
 package htscli
 
 import (
+	"fmt"
+
 	"github.com/ga4gh/htsget-refserver/internal/htsrequest"
 )
 
@@ -14,6 +16,7 @@ import (
 type BcftoolsViewCommand struct {
 	filePath   string
 	headerOnly bool
+	outputVCF  bool
 	region     *htsrequest.Region
 }
 
@@ -31,6 +34,23 @@ func (bcftoolsViewCommand *BcftoolsViewCommand) SetFilePath(filePath string) {
 // if false, the header is excluded entirely
 func (bcftoolsViewCommand *BcftoolsViewCommand) SetHeaderOnly(headerOnly bool) {
 	bcftoolsViewCommand.headerOnly = headerOnly
+}
+
+// SetOutputVCF sets boolean parameter that, if true, will stream variant data
+// as VCF. if false, variant data is streamed as BCF
+func (bcftoolsViewCommand *BcftoolsViewCommand) SetOutputVCF(outputVCF bool) {
+	bcftoolsViewCommand.outputVCF = outputVCF
+}
+
+// SetOutputFormat sets output format based on string keywords "VCF" or "BCF"
+func (bcftoolsViewCommand *BcftoolsViewCommand) SetOutputFormat(format string) {
+	if format == "VCF" {
+		bcftoolsViewCommand.SetOutputVCF(true)
+	} else if format == "BCF" {
+		bcftoolsViewCommand.SetOutputVCF(false)
+	} else {
+		bcftoolsViewCommand.SetOutputVCF(true)
+	}
 }
 
 // SetRegion sets the requested genomic region for variant streaming
@@ -51,19 +71,28 @@ func (bcftoolsViewCommand *BcftoolsViewCommand) GetCommand() *Command {
 	if bcftoolsViewCommand.headerOnly {
 		command.AddArg("-h")
 	} else {
-		command.AddArg("-H")
+		if bcftoolsViewCommand.outputVCF {
+			command.AddArg("-H")
+		}
 	}
 
 	// always output as uncompressed VCF
 	// TODO make 'format' parameter effective
 	command.AddArg("-O")
-	command.AddArg("v")
+	if bcftoolsViewCommand.outputVCF {
+		command.AddArg("v")
+	} else {
+		command.AddArg("u")
+	}
 
 	// add region interval flag
 	if bcftoolsViewCommand.region != nil {
 		command.AddArg("-r")
 		command.AddArg(bcftoolsViewCommand.region.ExportBcftools())
 	}
+
+	fmt.Println(command.baseCommand)
+	fmt.Println(command.args)
 
 	return command
 }

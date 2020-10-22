@@ -35,6 +35,7 @@ type HtsgetRequest struct {
 	htsgetTotalBlocks  string
 	htsgetFilePath     string
 	htsgetRange        string
+	matchingDataSource *htsconfig.DataSource
 }
 
 // NewHtsgetRequest instantiates a new HtsgetRequest instance
@@ -211,6 +212,20 @@ func (r *HtsgetRequest) GetHtsgetRange() string {
 	return r.htsgetRange
 }
 
+// SetMatchingDataSource sets the data source within the registry corresponding to this
+// request's requested id
+func (r *HtsgetRequest) SetMatchingDataSource() error {
+	registry := r.GetDataSourceRegistry()
+	dataSource, err := registry.FindMatchingDataSource(r.GetID())
+	r.matchingDataSource = dataSource
+	return err
+}
+
+// GetMatchingDataSource retrieves the matching data source
+func (r *HtsgetRequest) GetMatchingDataSource() *htsconfig.DataSource {
+	return r.matchingDataSource
+}
+
 // isDefaultString checks if a given string property matches the expected default value
 func (r *HtsgetRequest) isDefaultString(val string, def string) bool {
 	return val == def
@@ -239,6 +254,13 @@ func (r *HtsgetRequest) isDefaultList(val []string, def []string) bool {
 // HeaderOnlyRequested checks if the client request is only for the header
 func (r *HtsgetRequest) HeaderOnlyRequested() bool {
 	return r.GetClass() == htsconstants.ClassHeader
+}
+
+// FormatMatchesSourceDefault checks if the requested output format matches
+// the format that the data is already in (for the given data source in the
+// data source registry)
+func (r *HtsgetRequest) FormatMatchesSourceDefault() bool {
+	return r.GetFormat() == r.GetMatchingDataSource().DefaultFormat
 }
 
 // UnplacedUnmappedReadsRequested checks if the client request is for unplaced,
@@ -326,6 +348,8 @@ func (r *HtsgetRequest) ConstructDataEndpointURL(useRegion bool, regionI int) (s
 
 	// add query params
 	query := dataEndpoint.Query()
+	query.Set("format", r.GetFormat())
+
 	if r.HeaderOnlyRequested() {
 		query.Set("class", r.GetClass())
 	}

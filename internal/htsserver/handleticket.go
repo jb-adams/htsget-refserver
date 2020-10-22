@@ -54,7 +54,7 @@ func ticketRequestHandler(handler *requestHandler) {
 	if handler.HtsReq.HeaderOnlyRequested() {
 		blockURLs = addHeaderBlockURL(blockURLs, handler.HtsReq, 1)
 		// pure byte range URLs, requires one block per every x bytes
-	} else if handler.HtsReq.AllFieldsRequested() && handler.HtsReq.AllTagsRequested() && handler.HtsReq.AllRegionsRequested() {
+	} else if handler.HtsReq.FormatMatchesSourceDefault() && handler.HtsReq.AllFieldsRequested() && handler.HtsReq.AllTagsRequested() && handler.HtsReq.AllRegionsRequested() {
 		blockURLs = dao.GetByteRangeUrls()
 	} else {
 		if handler.HtsReq.AllRegionsRequested() {
