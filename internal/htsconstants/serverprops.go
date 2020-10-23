@@ -26,6 +26,9 @@ var DfltServerPropsLogFile = "htsget-refserver.log"
  * READS DATA SOURCE REGISTRY
  * ************************************************** */
 
+// DfltReadsFormat default expected format for reads data sources
+var DfltReadsFormat = "BAM"
+
 // DfltReadsDataSourceTabulaMuris10XPattern regex pattern for tabula muris 10x ids
 var DfltReadsDataSourceTabulaMuris10XPattern = "^tabulamuris\\.(?P<accession>10X.*)$"
 
@@ -41,6 +44,9 @@ var DfltReadsDataSourceTabulaMurisFACSPath = "https://s3.amazonaws.com/czbiohub-
 /* **************************************************
  * VARIANTS DATA SOURCE REGISTRY
  * ************************************************** */
+
+// DfltVariantsFormat default expected format for variants data sources
+var DfltVariantsFormat = "VCF"
 
 // DfltVariantsDataSource1000GPattern regex pattern for 1000 genomes vcf ids
 var DfltVariantsDataSource1000GPattern = "^1000genomes\\.(?P<accession>.*)$"

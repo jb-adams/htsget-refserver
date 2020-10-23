@@ -243,19 +243,20 @@ var requestIsFinalBlockTC = []struct {
 
 // requestConstructDataEndpointURLTC test cases for ConstructDataEndpointURL
 var requestConstructDataEndpointURLTC = []struct {
-	endpoint                 htsconstants.APIEndpoint
-	id, class, referenceName string
-	start, end               int
-	fields, tags, notags     []string
-	exp                      string
-	useRegion                bool
-	regionI                  int
-	expErr                   bool
-	useBadConfig             bool
+	endpoint                         htsconstants.APIEndpoint
+	id, format, class, referenceName string
+	start, end                       int
+	fields, tags, notags             []string
+	exp                              string
+	useRegion                        bool
+	regionI                          int
+	expErr                           bool
+	useBadConfig                     bool
 }{
 	{
 		htsconstants.APIEndpointReadsTicket,
 		"object0052",
+		defaultFormatReads,
 		"",
 		"chr1",
 		65000,
@@ -263,7 +264,7 @@ var requestConstructDataEndpointURLTC = []struct {
 		defaultFields,
 		defaultTags,
 		defaultNoTags,
-		"http://localhost:3000/reads/data/object0052?end=420000&referenceName=chr1&start=65000",
+		"http://localhost:3000/reads/data/object0052?end=420000&format=BAM&referenceName=chr1&start=65000",
 		true,
 		0,
 		false,
@@ -272,6 +273,7 @@ var requestConstructDataEndpointURLTC = []struct {
 	{
 		htsconstants.APIEndpointReadsTicket,
 		"tabulamuris.00001",
+		defaultFormatReads,
 		"",
 		"chr22",
 		11000000,
@@ -279,7 +281,7 @@ var requestConstructDataEndpointURLTC = []struct {
 		[]string{"SEQ", "QUAL"},
 		[]string{"NM", "HI"},
 		defaultNoTags,
-		"http://localhost:3000/reads/data/tabulamuris.00001?end=45000000&fields=SEQ%2CQUAL&referenceName=chr22&start=11000000&tags=NM%2CHI",
+		"http://localhost:3000/reads/data/tabulamuris.00001?end=45000000&fields=SEQ%2CQUAL&format=BAM&referenceName=chr22&start=11000000&tags=NM%2CHI",
 		true,
 		0,
 		false,
@@ -288,6 +290,7 @@ var requestConstructDataEndpointURLTC = []struct {
 	{
 		htsconstants.APIEndpointReadsTicket,
 		"tabulamuris.00001",
+		defaultFormatReads,
 		"header",
 		defaultReferenceName,
 		defaultStart,
@@ -295,7 +298,7 @@ var requestConstructDataEndpointURLTC = []struct {
 		defaultFields,
 		defaultTags,
 		defaultNoTags,
-		"http://localhost:3000/reads/data/tabulamuris.00001?class=header",
+		"http://localhost:3000/reads/data/tabulamuris.00001?class=header&format=BAM",
 		false,
 		0,
 		false,
@@ -304,6 +307,7 @@ var requestConstructDataEndpointURLTC = []struct {
 	{
 		htsconstants.APIEndpointReadsTicket,
 		"tabulamuris.00001",
+		defaultFormatReads,
 		defaultClass,
 		defaultReferenceName,
 		defaultStart,
@@ -311,7 +315,7 @@ var requestConstructDataEndpointURLTC = []struct {
 		defaultFields,
 		defaultTags,
 		[]string{"NM", "HI"},
-		"http://localhost:3000/reads/data/tabulamuris.00001?notags=NM%2CHI",
+		"http://localhost:3000/reads/data/tabulamuris.00001?format=BAM&notags=NM%2CHI",
 		false,
 		0,
 		false,
@@ -320,6 +324,7 @@ var requestConstructDataEndpointURLTC = []struct {
 	{
 		htsconstants.APIEndpointReadsTicket,
 		"tabulamuris.00001",
+		defaultFormatReads,
 		defaultClass,
 		defaultReferenceName,
 		defaultStart,
@@ -327,7 +332,7 @@ var requestConstructDataEndpointURLTC = []struct {
 		defaultFields,
 		defaultTags,
 		[]string{"NM", "HI"},
-		"http://localhost:3000/reads/data/tabulamuris.00001?notags=NM%2CHI",
+		"http://localhost:3000/reads/data/tabulamuris.00001?format=BAM&notags=NM%2CHI",
 		false,
 		0,
 		true,
@@ -588,6 +593,7 @@ func TestRequestConstructDataEndpointURL(t *testing.T) {
 		request := NewHtsgetRequest()
 		request.SetEndpoint(tc.endpoint)
 		request.SetID(tc.id)
+		request.SetFormat(tc.format)
 		request.SetClass(tc.class)
 		request.SetReferenceName(tc.referenceName)
 		request.SetStart(tc.start)

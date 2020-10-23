@@ -10,7 +10,8 @@
         "sources": [
           {
             "pattern": "^tabulamuris\\.(?P<accession>.*)$",
-            "path": "../../data/test/sources/tabulamuris/{accession}.mus.Aligned.out.sorted.bam"
+            "path": "../../data/test/sources/tabulamuris/{accession}.mus.Aligned.out.sorted.bam",
+            "defaultFormat": "BAM"
           }
         ]
       }
@@ -21,7 +22,8 @@
         "sources": [
           {
             "pattern": "^(?P<accession>.*)_GIAB$",
-            "path": "../../data/test/sources/giab/{accession}_GIAB.filtered.vcf.gz"
+            "path": "../../data/test/sources/giab/{accession}_GIAB.filtered.vcf.gz",
+            "defaultFormat": "VCF"
           }
         ]
       }

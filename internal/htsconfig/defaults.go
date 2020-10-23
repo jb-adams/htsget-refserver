@@ -37,12 +37,14 @@ var DefaultConfiguration = &Configuration{
 			DataSourceRegistry: &DataSourceRegistry{
 				Sources: []*DataSource{
 					&DataSource{
-						Pattern: htsconstants.DfltReadsDataSourceTabulaMuris10XPattern,
-						Path:    htsconstants.DfltReadsDataSourceTabulaMuris10XPath,
+						Pattern:       htsconstants.DfltReadsDataSourceTabulaMuris10XPattern,
+						Path:          htsconstants.DfltReadsDataSourceTabulaMuris10XPath,
+						DefaultFormat: htsconstants.DfltReadsFormat,
 					},
 					&DataSource{
-						Pattern: htsconstants.DfltReadsDataSourceTabulaMurisFACSPattern,
-						Path:    htsconstants.DfltReadsDataSourceTabulaMurisFACSPath,
+						Pattern:       htsconstants.DfltReadsDataSourceTabulaMurisFACSPattern,
+						Path:          htsconstants.DfltReadsDataSourceTabulaMurisFACSPath,
+						DefaultFormat: htsconstants.DfltReadsFormat,
 					},
 				},
 			},
@@ -74,12 +76,14 @@ var DefaultConfiguration = &Configuration{
 			DataSourceRegistry: &DataSourceRegistry{
 				Sources: []*DataSource{
 					&DataSource{
-						Pattern: htsconstants.DfltVariantsDataSource1000GPattern,
-						Path:    htsconstants.DfltVariantsDataSource1000GPath,
+						Pattern:       htsconstants.DfltVariantsDataSource1000GPattern,
+						Path:          htsconstants.DfltVariantsDataSource1000GPath,
+						DefaultFormat: htsconstants.DfltVariantsFormat,
 					},
 					&DataSource{
-						Pattern: htsconstants.DfltVariantsDataSourceGIABTestPattern,
-						Path:    htsconstants.DfltVariantsDataSourceGIABTestPath,
+						Pattern:       htsconstants.DfltVariantsDataSourceGIABTestPattern,
+						Path:          htsconstants.DfltVariantsDataSourceGIABTestPath,
+						DefaultFormat: htsconstants.DfltVariantsFormat,
 					},
 				},
 			},
