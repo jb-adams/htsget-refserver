@@ -40,7 +40,7 @@ var httpRequestSingleTC = []struct {
 		nil,
 		"",
 		200,
-		"{\"id\":\"htsgetref.variants\",\"name\":\"GA4GH htsget reference server variants endpoint\",\"type\":{\"group\":\"org.ga4gh\",\"artifact\":\"htsget\",\"version\":\"1.2.0\"},\"description\":\"Stream variant files (VCF/BCF) according to GA4GH htsget protocol\",\"organization\":{\"name\":\"Global Alliance for Genomics and Health\",\"url\":\"https://ga4gh.org\"},\"contactUrl\":\"mailto:jeremy.adams@ga4gh.org\",\"documentationUrl\":\"https://ga4gh.org\",\"createdAt\":\"2020-09-01T12:00:00Z\",\"updatedAt\":\"2020-09-01T12:00:00Z\",\"environment\":\"test\",\"version\":\"1.4.1\",\"htsget\":{\"datatype\":\"variants\",\"formats\":[\"VCF\"],\"fieldsParameterEffective\":false,\"tagsParametersEffective\":false}}\n",
+		"{\"id\":\"htsgetref.variants\",\"name\":\"GA4GH htsget reference server variants endpoint\",\"type\":{\"group\":\"org.ga4gh\",\"artifact\":\"htsget\",\"version\":\"1.2.0\"},\"description\":\"Stream variant files (VCF/BCF) according to GA4GH htsget protocol\",\"organization\":{\"name\":\"Global Alliance for Genomics and Health\",\"url\":\"https://ga4gh.org\"},\"contactUrl\":\"mailto:jeremy.adams@ga4gh.org\",\"documentationUrl\":\"https://ga4gh.org\",\"createdAt\":\"2020-09-01T12:00:00Z\",\"updatedAt\":\"2020-09-01T12:00:00Z\",\"environment\":\"test\",\"version\":\"1.4.1\",\"htsget\":{\"datatype\":\"variants\",\"formats\":[\"VCF\",\"BCF\"],\"fieldsParameterEffective\":false,\"tagsParametersEffective\":false}}\n",
 	},
 	/* GET READS TICKET CASES */
 	{
@@ -81,7 +81,7 @@ var httpRequestSingleTC = []struct {
 		nil,
 		"",
 		200,
-		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?class=header\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"1\"},\"class\":\"header\"}]}}\n",
+		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?class=header\\u0026format=BAM\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"1\"},\"class\":\"header\"}]}}\n",
 	},
 
 	{
@@ -98,7 +98,7 @@ var httpRequestSingleTC = []struct {
 		nil,
 		"",
 		200,
-		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=SEQ%2CQUAL\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"header\"},{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?end=30000000\\u0026fields=SEQ%2CQUAL\\u0026referenceName=chr1\\u0026start=20000000\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetCurrentBlock\":\"1\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"body\"}]}}\n",
+		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=SEQ%2CQUAL\\u0026format=BAM\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"header\"},{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?end=30000000\\u0026fields=SEQ%2CQUAL\\u0026format=BAM\\u0026referenceName=chr1\\u0026start=20000000\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetCurrentBlock\":\"1\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"body\"}]}}\n",
 	},
 
 	{
@@ -112,7 +112,7 @@ var httpRequestSingleTC = []struct {
 		nil,
 		"",
 		200,
-		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=QNAME%2CFLAG%2CRNAME\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"header\"},{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=QNAME%2CFLAG%2CRNAME\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetCurrentBlock\":\"1\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"body\"}]}}\n",
+		"{\"htsget\":{\"format\":\"BAM\",\"urls\":[{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=QNAME%2CFLAG%2CRNAME\\u0026format=BAM\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetBlockClass\":\"header\",\"HtsgetCurrentBlock\":\"0\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"header\"},{\"url\":\"http://localhost:3000/reads/data/tabulamuris.A1-B000168-3_57_F-1-1_R2?fields=QNAME%2CFLAG%2CRNAME\\u0026format=BAM\\u0026tags=HI%2CNM\",\"headers\":{\"HtsgetCurrentBlock\":\"1\",\"HtsgetTotalBlocks\":\"2\"},\"class\":\"body\"}]}}\n",
 	},
 
 	/* GET VARIANTS TICKET CASES */
