@@ -1,3 +1,8 @@
+// Package htsdao defines Data Access Objects, which
+// opens handles to reads/variants data based on different data sources
+// (local files, http URLs, etc.)
+//
+// Module filepathdao defines access methods for data accessible by local file path
 package htsdao
 
 import (
@@ -9,11 +14,13 @@ import (
 	"github.com/ga4gh/htsget-refserver/internal/htsticket"
 )
 
+// FilePathDao data access to reads/variants from a local file path
 type FilePathDao struct {
 	id       string
 	filePath string
 }
 
+// NewFilePathDao instantiates a new FilePathDao
 func NewFilePathDao(id string, filePath string) *FilePathDao {
 	dao := new(FilePathDao)
 	dao.id = id
@@ -21,11 +28,13 @@ func NewFilePathDao(id string, filePath string) *FilePathDao {
 	return dao
 }
 
+// GetContentLength gets the size in bytes of a local reads/variants file
 func (dao *FilePathDao) GetContentLength() int64 {
 	fileInfo, _ := os.Stat(dao.filePath)
 	return fileInfo.Size()
 }
 
+// constructByteRangeURL constructs a single byte range URL for the response ticket
 func (dao *FilePathDao) constructByteRangeURL(start int64, end int64) *htsticket.URL {
 	host := htsconfig.GetHost()
 	path := host + htsconstants.FileByteRangeURLPath
@@ -38,6 +47,8 @@ func (dao *FilePathDao) constructByteRangeURL(start int64, end int64) *htsticket
 	return url
 }
 
+// GetByteRangeUrls constructs URLs for an htsget ticket, which provide simple,
+// non-overlapping byte range indices to download the target file in blocks
 func (dao *FilePathDao) GetByteRangeUrls() []*htsticket.URL {
 	numBytes := dao.GetContentLength()
 	blockSize := htsconstants.SingleBlockByteSize
@@ -56,6 +67,7 @@ func (dao *FilePathDao) GetByteRangeUrls() []*htsticket.URL {
 	return urls
 }
 
+// String get the FilePathDao object represented as a string
 func (dao *FilePathDao) String() string {
 	return "FilePathDao id=" + dao.id + ", filePath=" + dao.filePath
 }
