@@ -174,8 +174,21 @@ var httpRequestMultiTC = []E2ETestCase{
 		"variants-tc-01.vcf",
 	},
 
-	// POST VARIANTS, NOTHING SPECIFIED
+	// GET VARIANTS, FORMAT BCF, REGIONS
+	{
+		"GET",
+		"/variants/HG002_GIAB",
+		[][]string{
+			[]string{"format", "BCF"},
+			[]string{"referenceName", "22"},
+			[]string{"start", "10000000"},
+			[]string{"end", "40000000"},
+		},
+		"",
+		"variants-tc-04.bcf",
+	},
 
+	// POST VARIANTS, NOTHING SPECIFIED
 	{
 		"POST",
 		"/variants/HG002_GIAB",
@@ -200,6 +213,24 @@ var httpRequestMultiTC = []E2ETestCase{
 		nil,
 		"{\"format\":\"VCF\",\"regions\":[{\"referenceName\":\"10\",\"start\":60000000,\"end\":90000000},{\"referenceName\":\"11\",\"start\":70000000,\"end\":100000000},{\"referenceName\":\"12\",\"start\":80000000,\"end\":110000000}]}",
 		"variants-tc-03.vcf",
+	},
+
+	// POST VARIANTS, FORMAT BCF
+	{
+		"POST",
+		"/variants/HG002_GIAB",
+		nil,
+		"{\"format\":\"BCF\"}",
+		"variants-tc-05.bcf",
+	},
+
+	// POST VARIANTS, FORMAT BCF, REGIONS
+	{
+		"POST",
+		"/variants/HG002_GIAB",
+		nil,
+		"{\"format\":\"BCF\",\"regions\":[{\"referenceName\":\"10\",\"start\":60000000,\"end\":90000000},{\"referenceName\":\"11\",\"start\":70000000,\"end\":100000000},{\"referenceName\":\"12\",\"start\":80000000,\"end\":110000000}]}",
+		"variants-tc-06.bcf",
 	},
 }
 
