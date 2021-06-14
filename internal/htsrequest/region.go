@@ -5,7 +5,11 @@
 // Module region contains genomic intervals
 package htsrequest
 
-import "strconv"
+import (
+	"errors"
+	"strconv"
+	"strings"
+)
 
 // Region defines a simple genomic interval: contig name, start, and end position
 type Region struct {
@@ -17,6 +21,30 @@ type Region struct {
 // NewRegion instantiates a Region instance
 func NewRegion() *Region {
 	return new(Region)
+}
+
+func RegionFromString(regionString string) (*Region, error) {
+	region := new(Region)
+	colonSplit := strings.Split(regionString, ":")
+	region.SetReferenceName(colonSplit[0])
+	if len(colonSplit) > 1 {
+		dashSplit := strings.Split(colonSplit[1], "-")
+		startI, errStart := strconv.Atoi(dashSplit[0])
+		if errStart != nil {
+			return nil, errors.New("Error parsing region from string")
+		}
+		region.SetStart(startI)
+
+		if len(dashSplit) > 1 {
+			endI, errEnd := strconv.Atoi(dashSplit[1])
+			if errEnd != nil {
+				return nil, errors.New("Error parsing region from string")
+			}
+			region.SetEnd(endI)
+		}
+	}
+
+	return region, nil
 }
 
 /* SETTERS AND GETTERS */

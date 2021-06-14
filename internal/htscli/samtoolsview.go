@@ -58,6 +58,13 @@ func (samtoolsViewCommand *SamtoolsViewCommand) AddRegion(region *htsrequest.Reg
 	return samtoolsViewCommand
 }
 
+// AddMultiRegionIterator adds a flag to prevent streaming duplicate reads from
+// reads aligning to multiple specified regions
+func (samtoolsViewCommand *SamtoolsViewCommand) AddMultiRegionIterator() *SamtoolsViewCommand {
+	samtoolsViewCommand.command.AddArg("-M")
+	return samtoolsViewCommand
+}
+
 // StreamFromStdin adds a cli option, indicating that the input will come from
 // stdin and not an input file
 func (samtoolsViewCommand *SamtoolsViewCommand) StreamFromStdin() *SamtoolsViewCommand {

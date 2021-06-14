@@ -2,6 +2,7 @@ package htsserver
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"net/http"
 	"os/exec"
@@ -16,12 +17,17 @@ func getReadsData(writer http.ResponseWriter, request *http.Request) {
 	newRequestHandler(
 		htsconstants.GetMethod,
 		htsconstants.APIEndpointReadsData,
-		addRegionFromQueryString,
+		noAfterSetup,
 		getReadsDataHandler,
 	).handleRequest(writer, request)
 }
 
 func getReadsDataHandler(handler *requestHandler) {
+
+	fmt.Println("Reads data endpoint")
+	fmt.Println(handler.HtsReq.GetRegions())
+	fmt.Println("***")
+
 	fileURL, err := htsconfig.GetObjectPath(handler.HtsReq.GetEndpoint(), handler.HtsReq.GetID())
 	if err != nil {
 		return
@@ -39,25 +45,23 @@ func getReadsDataHandler(handler *requestHandler) {
 		// in a different block
 		headerByteSize, _ := getHeaderByteSize(handler.HtsReq.GetID(), fileURL)
 		removedHeadBytes = headerByteSize
-		var region *htsrequest.Region = nil
-		if !handler.HtsReq.AllRegionsRequested() {
-			region = handler.HtsReq.GetRegions()[0]
-		}
+		regions := handler.HtsReq.GetRegions()
 
 		if handler.HtsReq.AllFieldsRequested() && handler.HtsReq.AllTagsRequested() {
 			// simple streaming of single block without field/tag modification
-			commandChain.AddCommand(samtoolsViewHeaderExcludedBAM(fileURL, region))
+			commandChain.AddCommand(samtoolsViewHeaderExcludedBAM(fileURL, regions))
 
 		} else {
 			// specific fields/tags requested, requires chaining of samtools
 			// with htsget-refserver-utils modify sam commands
-			commandChain.AddCommand(samtoolsViewHeaderIncludedSAM(fileURL, region))
+			commandChain.AddCommand(samtoolsViewHeaderIncludedSAM(fileURL, regions))
 			commandChain.AddCommand(modifySam(handler.HtsReq))
 			commandChain.AddCommand(samtoolsViewSamToBamStream())
 		}
 	}
 
 	// execute command chain and stream output
+	fmt.Println("executing command chain")
 	commandWriteStream(commandChain, removedHeadBytes, removedTailBytes, handler.Writer)
 
 	// write EOF on the last block
@@ -109,18 +113,24 @@ func samtoolsViewHeaderOnlyBAM(fileURL string) *htscli.Command {
 }
 
 // requests for all fields/tags
-func samtoolsViewHeaderExcludedBAM(fileURL string, region *htsrequest.Region) *htscli.Command {
+func samtoolsViewHeaderExcludedBAM(fileURL string, regions []*htsrequest.Region) *htscli.Command {
 	samtoolsView := htscli.SamtoolsView().AddFilePath(fileURL).OutputBAM()
-	if region != nil {
+	if len(regions) > 1 {
+		samtoolsView.AddMultiRegionIterator()
+	}
+	for _, region := range regions {
 		samtoolsView.AddRegion(region)
 	}
 	return samtoolsView.GetCommand()
 }
 
 // commands used when custom fields/tags are requested
-func samtoolsViewHeaderIncludedSAM(fileURL string, region *htsrequest.Region) *htscli.Command {
+func samtoolsViewHeaderIncludedSAM(fileURL string, regions []*htsrequest.Region) *htscli.Command {
 	samtoolsView := htscli.SamtoolsView().AddFilePath(fileURL).HeaderIncluded()
-	if region != nil {
+	if len(regions) > 1 {
+		samtoolsView.AddMultiRegionIterator()
+	}
+	for _, region := range regions {
 		samtoolsView.AddRegion(region)
 	}
 	return samtoolsView.GetCommand()

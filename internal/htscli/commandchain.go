@@ -7,6 +7,7 @@
 package htscli
 
 import (
+	"fmt"
 	"io"
 )
 
@@ -53,6 +54,7 @@ func (commandChain *CommandChain) ExecuteCommandChain() io.ReadCloser {
 		// set the next command's stdin to the stdout pipe of the current command
 		// start the current command
 		current := commandChain.commands[i].cmd
+		fmt.Println(current)
 		next := commandChain.commands[i+1].cmd
 		pipe, _ := current.StdoutPipe()
 		next.Stdin = pipe
@@ -61,6 +63,7 @@ func (commandChain *CommandChain) ExecuteCommandChain() io.ReadCloser {
 
 	// for the last command, return its stdout pipe
 	last := commandChain.GetLastCommand().cmd
+	fmt.Println(last)
 	pipe, _ := last.StdoutPipe()
 	last.Start()
 	return pipe

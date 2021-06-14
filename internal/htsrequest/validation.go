@@ -115,7 +115,7 @@ func (v *ParamValidator) ValidateClass(htsgetReq *HtsgetRequest, class string) (
 	}
 }
 
-func getReferenceNamesInReadsObject(htsgetReq *HtsgetRequest) ([]string, error) {
+func GetReferenceNamesInReadsObject(htsgetReq *HtsgetRequest) ([]string, error) {
 
 	var referenceNames []string
 	fileURL, err := htsconfig.GetObjectPath(htsgetReq.GetEndpoint(), htsgetReq.GetID())
@@ -151,7 +151,7 @@ func getReferenceNamesInReadsObject(htsgetReq *HtsgetRequest) ([]string, error) 
 	return referenceNames, nil
 }
 
-func getReferenceNamesInVariantsObject(htsgetReq *HtsgetRequest) ([]string, error) {
+func GetReferenceNamesInVariantsObject(htsgetReq *HtsgetRequest) ([]string, error) {
 	var referenceNames []string
 	fileURL, err := htsconfig.GetObjectPath(htsgetReq.GetEndpoint(), htsgetReq.GetID())
 	if err != nil {
@@ -189,10 +189,10 @@ func getReferenceNamesInVariantsObject(htsgetReq *HtsgetRequest) ([]string, erro
 // for the 'referenceName' parameter for the requested object
 func getReferenceNames(htsgetReq *HtsgetRequest) ([]string, error) {
 	functions := map[htsconstants.APIEndpoint]func(htsgetReq *HtsgetRequest) ([]string, error){
-		htsconstants.APIEndpointReadsTicket:    getReferenceNamesInReadsObject,
-		htsconstants.APIEndpointReadsData:      getReferenceNamesInReadsObject,
-		htsconstants.APIEndpointVariantsTicket: getReferenceNamesInVariantsObject,
-		htsconstants.APIEndpointVariantsData:   getReferenceNamesInVariantsObject,
+		htsconstants.APIEndpointReadsTicket:    GetReferenceNamesInReadsObject,
+		htsconstants.APIEndpointReadsData:      GetReferenceNamesInReadsObject,
+		htsconstants.APIEndpointVariantsTicket: GetReferenceNamesInVariantsObject,
+		htsconstants.APIEndpointVariantsData:   GetReferenceNamesInVariantsObject,
 	}
 	return functions[htsgetReq.endpoint](htsgetReq)
 }

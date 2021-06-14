@@ -316,7 +316,7 @@ func (r *HtsgetRequest) IsFinalBlock() bool {
 // ConstructDataEndpointURL for a given htsget request object, return the url
 // that will redirect the client to the correct data download endpoint with
 // all necessary parameters and headers provided
-func (r *HtsgetRequest) ConstructDataEndpointURL(useRegion bool, regionI int) (string, error) {
+func (r *HtsgetRequest) ConstructDataEndpointURL(bridgedRegion []*Region) (string, error) {
 	host := htsconfig.GetHost()
 	dataEndpointPath := r.GetEndpoint().DataEndpointPath()
 	dataEndpoint, err := url.Parse(htsutils.RemoveTrailingSlash(host) + dataEndpointPath + r.GetID())
@@ -330,17 +330,12 @@ func (r *HtsgetRequest) ConstructDataEndpointURL(useRegion bool, regionI int) (s
 		query.Set("class", r.GetClass())
 	}
 
-	if useRegion {
-		region := r.GetRegions()[regionI]
-		if region.ReferenceNameRequested() {
-			query.Set("referenceName", region.GetReferenceName())
+	if bridgedRegion != nil {
+		regionStrings := []string{}
+		for i := range bridgedRegion {
+			regionStrings = append(regionStrings, bridgedRegion[i].String())
 		}
-		if region.StartRequested() {
-			query.Set("start", region.StartString())
-		}
-		if region.EndRequested() {
-			query.Set("end", region.EndString())
-		}
+		query.Set("regions", strings.Join(regionStrings, ","))
 	}
 
 	if !r.AllFieldsRequested() {

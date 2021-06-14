@@ -61,3 +61,20 @@ func (t *ParamTransformer) TransformSplitAndUppercase(s string) ([]string, strin
 	}
 	return sList, ""
 }
+
+// TransformRegions takes a list of regions specified as a query parameter,
+// and transforms them to an array of Region objects
+func (t *ParamTransformer) TransformRegions(s string) ([]*Region, string) {
+	regionStrings := strings.Split(s, ",")
+	regions := []*Region{}
+
+	for _, regionString := range regionStrings {
+		region, err := RegionFromString(regionString)
+		if err != nil {
+			return nil, err.Error()
+		}
+		regions = append(regions, region)
+	}
+
+	return regions, ""
+}

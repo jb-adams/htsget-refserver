@@ -99,3 +99,17 @@ func ParseRangeHeader(rangeHeader string) (int64, int64, error) {
 
 	return int64(start), int64(end), nil
 }
+
+func Min(i int, j int) int {
+	if i < j {
+		return i
+	}
+	return j
+}
+
+func Max(i int, j int) int {
+	if i > j {
+		return i
+	}
+	return j
+}

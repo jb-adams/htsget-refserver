@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/ga4gh/htsget-refserver/internal/htsrequest"
+	"github.com/ga4gh/htsget-refserver/internal/htsrequest/preprocessing"
 
 	"github.com/ga4gh/htsget-refserver/internal/htsdao"
 	"github.com/ga4gh/htsget-refserver/internal/htserror"
@@ -19,7 +20,7 @@ func addHeaderBlockURL(blockURLs []*htsticket.URL, request *htsrequest.HtsgetReq
 		SetCurrentBlock("0").
 		SetTotalBlocks(strconv.Itoa(totalBlocks)).
 		SetClassHeader()
-	dataEndpoint, _ := request.ConstructDataEndpointURL(false, 0)
+	dataEndpoint, _ := request.ConstructDataEndpointURL(nil)
 	blockURL := htsticket.NewURL().
 		SetURL(dataEndpoint).
 		SetHeaders(blockHeaders).
@@ -27,11 +28,11 @@ func addHeaderBlockURL(blockURLs []*htsticket.URL, request *htsrequest.HtsgetReq
 	return addBlockURL(blockURLs, blockURL)
 }
 
-func addBodyBlockURL(blockURLs []*htsticket.URL, request *htsrequest.HtsgetRequest, currentBlock int, totalBlocks int, useRegion bool, regionI int) []*htsticket.URL {
+func addBodyBlockURL(blockURLs []*htsticket.URL, request *htsrequest.HtsgetRequest, currentBlock int, totalBlocks int, bridgedRegion []*htsrequest.Region) []*htsticket.URL {
 	blockHeaders := htsticket.NewHeaders().
 		SetCurrentBlock(strconv.Itoa(currentBlock)).
 		SetTotalBlocks(strconv.Itoa(totalBlocks))
-	dataEndpoint, _ := request.ConstructDataEndpointURL(useRegion, regionI)
+	dataEndpoint, _ := request.ConstructDataEndpointURL(bridgedRegion)
 	blockURL := htsticket.NewURL().
 		SetURL(dataEndpoint).
 		SetHeaders(blockHeaders).
@@ -61,14 +62,16 @@ func ticketRequestHandler(handler *requestHandler) {
 			// the entire file was requested, requires 2 blocks: one for header
 			// and one for body
 			blockURLs = addHeaderBlockURL(blockURLs, handler.HtsReq, 2)
-			blockURLs = addBodyBlockURL(blockURLs, handler.HtsReq, 1, 2, false, 0)
+			blockURLs = addBodyBlockURL(blockURLs, handler.HtsReq, 1, 2, nil)
 		} else {
+			// preprocess requested regions, including sorting and merging
+			bridgedRegions := preprocessing.PreprocessRegions(handler.HtsReq)
 			// one or more regions requested, requires one header block, and one
-			// block for per region
-			nBlocks := handler.HtsReq.NRegions() + 1
+			// block for per bridged region
+			nBlocks := len(bridgedRegions) + 1
 			blockURLs = addHeaderBlockURL(blockURLs, handler.HtsReq, nBlocks)
-			for i := range handler.HtsReq.GetRegions() {
-				blockURLs = addBodyBlockURL(blockURLs, handler.HtsReq, i+1, nBlocks, true, i)
+			for i := range bridgedRegions {
+				blockURLs = addBodyBlockURL(blockURLs, handler.HtsReq, i+1, nBlocks, bridgedRegions[i])
 			}
 		}
 	}
