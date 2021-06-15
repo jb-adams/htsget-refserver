@@ -13,7 +13,6 @@ jobs:
     env:
       SAMTOOLS: ./scripts/ci/install-samtools.sh
       BCFTOOLS: ./scripts/ci/install-bcftools.sh
-      UTILS: ./scripts/ci/install-htsget-refserver-utils.sh
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -32,7 +31,6 @@ jobs:
       - name: Install htsget refserver utils
         run: |
           go install github.com/ga4gh/htsget-refserver-utils@v1.0.0
-          htsget-refserver-utils
     
       - name: Install samtools
         run: |
