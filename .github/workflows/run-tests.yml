@@ -28,6 +28,11 @@ jobs:
           go version
           go get -u golang.org/x/lint/golint
           go get github.com/mattn/goveralls
+
+      - name: Install htsget refserver utils
+        run: |
+          go install github.com/ga4gh/htsget-refserver-utils@v1.0.0
+          htsget-refserver-utils
     
       - name: Install samtools
         run: |
@@ -36,10 +41,6 @@ jobs:
       - name: Install bcftools
         run: |
           chmod 700 ${BCFTOOLS} && source ${BCFTOOLS} && bcftools --version
-    
-      - name: Install htsget refserver utils
-        run: |
-          chmod 700 ${UTILS} && source ${UTILS}
     
       - name: Run tests
         run: |
