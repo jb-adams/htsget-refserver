@@ -23,13 +23,22 @@ jobs:
         with:
           go-version: '1.15.0'
     
-      - name: Install dependencies
+      - name: Install go dependencies
         run: |
           go version
           go get -u golang.org/x/lint/golint
           go get github.com/mattn/goveralls
+    
+      - name: Install samtools
+        run: |
           chmod 700 ${SAMTOOLS} && source ${SAMTOOLS} && samtools --version
+    
+      - name: Install bcftools
+        run: |
           chmod 700 ${BCFTOOLS} && source ${BCFTOOLS} && bcftools --version
+    
+      - name: Install htsget refserver utils
+        run: |
           chmod 700 ${UTILS} && source ${UTILS}
     
       - name: Run tests
